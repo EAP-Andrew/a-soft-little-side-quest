@@ -56,9 +56,13 @@ export function setupInput(canvas) {
     mouse.x = ((e.clientX - r.left) / r.width) * canvas.width;
     mouse.y = ((e.clientY - r.top) / r.height) * canvas.height;
   });
-  canvas.addEventListener('click', () => {
+  const registerPointerClick = () => {
     mouse.clicked = true;
-  });
+  };
+
+  // Support mouse, touch and pen interactions reliably across browsers/devices.
+  canvas.addEventListener('pointerdown', registerPointerClick);
+  canvas.addEventListener('click', registerPointerClick);
 }
 
 export function clearInputState() {
