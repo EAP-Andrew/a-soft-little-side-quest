@@ -1,0 +1,9 @@
+#hud { position: absolute; inset: 1rem 1rem auto 1rem; pointer-events: none; }
+#hudTop, #hudObjective { background: rgba(11, 16, 26, .62); padding: .45rem .65rem; width: fit-content; border-radius: 8px; margin-bottom: .35rem; }
+#hudProgress { width: min(420px, 80vw); height: 12px; background: #ffffff22; border-radius: 8px; overflow: hidden; }
+#hudProgressFill { width: 0%; height: 100%; background: linear-gradient(90deg, #8ff0cb, #f2baea); }
+#hudPrompt { margin-top: .45rem; color: #fef3ff; text-shadow: 0 0 8px #000; }
+#hudToast { position: absolute; right: 0; top: 0; opacity: 0; transition: opacity .2s; background: #ffe0f5; color: #3e284f; padding: .45rem .6rem; border-radius: 8px; }
+#hudToast.show { opacity: 1; }
+.paper { background: #fff7e9; color: #3b2f25; border-radius: 12px; padding: 1.2rem 1.4rem; box-shadow: 0 12px 40px #0003; animation: rise .35s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }

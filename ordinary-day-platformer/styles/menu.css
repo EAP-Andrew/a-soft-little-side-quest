@@ -1,0 +1,10 @@
+.menu-screen { background: linear-gradient(180deg, rgba(184,171,255,.35), rgba(249,190,231,.25)); }
+.menu-card { text-align: center; background: rgba(255, 255, 255, 0.82); color: #2a1d37; padding: 2rem; border-radius: 16px; width: min(90vw, 720px); }
+.menu-card h1 { margin: 0; font-size: clamp(1.6rem, 3.4vw, 3rem); letter-spacing: .04em; }
+.subtitle { margin: .7rem auto 1.4rem; opacity: .85; }
+.menu-buttons { display: grid; gap: .6rem; grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+#menuStars { position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle at 10% 12%, #fff6, #0000 2%), radial-gradient(circle at 82% 18%, #fff6, #0000 2%), radial-gradient(circle at 40% 76%, #fff4, #0000 2%); animation: drift 14s linear infinite; }
+@keyframes drift { from { transform: translateX(0); } to { transform: translateX(-2%); } }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .8rem; margin: 1rem 0; }
+.card { text-align: left; background: linear-gradient(145deg, #cfe4ff, #f4dcff); min-height: 145px; }
+.card.done { outline: 2px solid #52d1a3; }

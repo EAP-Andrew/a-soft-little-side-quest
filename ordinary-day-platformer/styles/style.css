@@ -1,0 +1,12 @@
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; font-family: 'Trebuchet MS', 'Segoe UI', sans-serif; }
+body { margin: 0; background: radial-gradient(circle at top, #17375b, #0b1320); color: #fff; }
+#app { position: relative; min-height: 100vh; display: grid; place-items: center; }
+canvas { width: min(100vw, 1280px); height: auto; aspect-ratio: 16/9; background: #000; border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,.38); }
+.overlay { position: absolute; inset: 0; display: grid; place-items: center; backdrop-filter: blur(2px); }
+.hidden { display: none !important; }
+.panel { background: rgba(12, 17, 28, 0.82); color: #fff; padding: 2rem; border-radius: 14px; width: min(92vw, 880px); max-height: 84vh; overflow: auto; }
+button { border: 0; padding: .65rem 1rem; border-radius: 10px; cursor: pointer; background: #f59dd4; color: #2d1435; font-weight: 700; }
+button:hover { filter: brightness(1.06); transform: translateY(-1px); }
+#screenTooSmall { font-size: 1.1rem; color: #fff; text-shadow: 0 2px 8px #000; }
+pre { white-space: pre-wrap; line-height: 1.45; }
