@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>A SOFT LITTLE SIDE QUEST</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/menu.css" />
+  <link rel="stylesheet" href="styles/hud.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="gameCanvas" aria-label="A Soft Little Side Quest"></canvas>
+    <div id="screenTooSmall" class="overlay hidden">For the best experience, use a wider screen.</div>
+
+    <div id="menuScreen" class="overlay menu-screen">
+      <div class="menu-card">
+        <h1>A SOFT LITTLE SIDE QUEST</h1>
+        <p class="subtitle">Because you live for the adventure and the thrill of it</p>
+        <div class="menu-buttons">
+          <button id="playBtn">Play</button>
+          <button id="continueBtn">Continue</button>
+          <button id="controlsBtn">Controls</button>
+          <button id="creditsBtn">Credits</button>
+          <button id="muteBtn">Mute</button>
+          <button id="particlesBtn">Reduced Particles: Off</button>
+        </div>
+      </div>
+      <div id="menuStars"></div>
+    </div>
+
+    <div id="controlsScreen" class="overlay panel hidden"></div>
+    <div id="creditsScreen" class="overlay panel hidden"></div>
+    <div id="pauseScreen" class="overlay panel hidden"></div>
+    <div id="skyMapScreen" class="overlay panel hidden"></div>
+    <div id="letterScreen" class="overlay panel hidden"></div>
+
+    <div id="hud" class="hidden">
+      <div id="hudTop"></div>
+      <div id="hudObjective"></div>
+      <div id="hudProgress"><div id="hudProgressFill"></div></div>
+      <div id="hudPrompt"></div>
+      <div id="hudToast"></div>
+    </div>
+  </div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
