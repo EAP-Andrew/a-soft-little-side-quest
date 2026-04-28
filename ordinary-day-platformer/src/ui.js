@@ -20,22 +20,30 @@ export function setupUI(game) {
     showMenu() { menu.classList.remove('hidden'); game.showHud(false); },
     hideMenu() { menu.classList.add('hidden'); },
     showPause() {
-      pause.innerHTML = `<h2>Paused</h2><button id="resumeBtn">Resume</button><button id="menuBtn">Main Menu</button>`;
+      if (!pause.classList.contains('hidden')) return;
+      game.paused = true;
+      pause.innerHTML = `<div class="panel-shell"><h2>Paused</h2><p>Take a breath, princess. The quest waits for you.</p><div class="panel-actions"><button id="resumeBtn">Resume</button><button id="menuBtn" class="soft">Main Menu</button></div></div>`;
       pause.classList.remove('hidden');
-      document.getElementById('resumeBtn').onclick = () => pause.classList.add('hidden');
-      document.getElementById('menuBtn').onclick = () => { pause.classList.add('hidden'); game.goToMenu(); };
+      document.getElementById('resumeBtn').onclick = () => {
+        game.paused = false;
+        pause.classList.add('hidden');
+      };
+      document.getElementById('menuBtn').onclick = () => {
+        pause.classList.add('hidden');
+        game.goToMenu();
+      };
     },
     openSkyMap() {
       const cards = SKY_CARD_ORDER.map((id) => {
         const unlocked = game.saveState.unlockedSkyCards[id];
         const done = game.saveState.completedSkyCards[id];
-        return `<button class="card ${done ? 'done' : ''}" data-card="${id}">
+        return `<button class="card ${done ? 'done' : ''}" data-card="${id}" ${!unlocked ? 'disabled' : ''}>
           <h3>${game.skyCards[id].name}</h3>
           <p>${unlocked ? game.skyCards[id].description : 'This place is still sleeping.'}</p>
           <small>${done ? 'Completed' : unlocked ? 'Unlocked' : 'Locked'}</small>
         </button>`;
       }).join('');
-      skyMap.innerHTML = `<h2>The Sky Map</h2><p>Choose where the rocket carried your heart.</p><div class="cards">${cards}</div><button id="backMenu">Back to Menu</button>`;
+      skyMap.innerHTML = `<div class="panel-shell"><h2>The Sky Map</h2><p>Choose where the rocket carried your heart.</p><div class="cards">${cards}</div><button id="backMenu" class="soft">Back to Menu</button></div>`;
       skyMap.classList.remove('hidden');
       skyMap.querySelectorAll('.card').forEach((node) => {
         node.onclick = () => game.tryEnterSkyCard(node.dataset.card);
@@ -54,12 +62,17 @@ export function setupUI(game) {
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 1200);
     },
-    updateHud(text) { $('hudTop').textContent = text.top; $('hudObjective').textContent = text.obj; $('hudPrompt').textContent = text.prompt || ''; $('hudProgressFill').style.width = `${text.progress}%`; },
+    updateHud(text) {
+      $('hudTop').textContent = text.top;
+      $('hudObjective').textContent = text.obj;
+      $('hudPrompt').textContent = text.prompt || '';
+      $('hudProgressFill').style.width = `${text.progress}%`;
+    },
   };
 
-  controls.innerHTML = `<h2>Controls</h2><p>Z/W up, Q/A left, S down, D right, Space jump, Click interact, Esc pause, R respawn, F3 debug.</p><button>Back</button>`;
+  controls.innerHTML = `<div class="panel-shell"><h2>Controls</h2><ul class="controls-list"><li><strong>Move:</strong> Arrow Left/Right, A/D, or Q/D</li><li><strong>Jump:</strong> Space, Arrow Up, W, or Z</li><li><strong>Interact:</strong> Mouse click</li><li><strong>Pause:</strong> Escape</li><li><strong>Respawn:</strong> R</li><li><strong>Debug:</strong> F3</li></ul><button class="soft">Back</button></div>`;
   controls.querySelector('button').onclick = () => controls.classList.add('hidden');
-  credits.innerHTML = `<h2>${GAME_TITLE}</h2><p>${GAME_SUBTITLE}</p><p>Original code art, audio, and game design generated in vanilla HTML/CSS/JS.</p><button>Back</button>`;
+  credits.innerHTML = `<div class="panel-shell"><h2>${GAME_TITLE}</h2><p>${GAME_SUBTITLE}</p><p>Original code art, audio, and game design crafted in vanilla HTML/CSS/JS.</p><button class="soft">Back</button></div>`;
   credits.querySelector('button').onclick = () => credits.classList.add('hidden');
 }
 

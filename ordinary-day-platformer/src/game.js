@@ -1,5 +1,5 @@
 import { WIDTH, HEIGHT } from './config.js';
-import { setupInput, isDown, consumeClick } from './input.js';
+import { setupInput, endInputFrame, wasActionPressed, consumeClick } from './input.js';
 import { loadSave, persist, hasSave, clearSave, unlockSkyMap, openSkyMap, enterSkyCard, completeSkyCard, areAllSkyCardsCompleted, unlockFinalCastle, returnToFinalCastle } from './save.js';
 import { setupUI } from './ui.js';
 import { Player } from './player.js';
@@ -31,6 +31,7 @@ export class Game {
     this.zone = getZone(this.saveState.currentZone) || getZone('quiet-castle');
     this.debug = false;
     this.running = false;
+    this.paused = false;
     this.last = 0;
     this.checkpoint = { ...(this.zone.checkpoint || { x: 120, y: 520 }) };
     this.toastTime = 0;
@@ -48,10 +49,10 @@ export class Game {
   updateContinueBtn() { document.getElementById('continueBtn').style.display = hasSave() ? 'block' : 'none'; }
   toggleMute() { this.saveState.muted = !this.saveState.muted; setMuted(this.saveState.muted); persist(this.saveState); }
   toggleParticles() { this.saveState.reducedParticles = !this.saveState.reducedParticles; persist(this.saveState); document.getElementById('particlesBtn').textContent = `Reduced Particles: ${this.saveState.reducedParticles ? 'On' : 'Off'}`; }
-  goToMenu() { this.running = false; this.ui.showMenu(); playMusic('menu'); }
+  goToMenu() { this.running = false; this.paused = false; this.ui.showMenu(); playMusic('menu'); }
 
-  startNew() { clearSave(); this.saveState = loadSave(); this.loadZone('quiet-castle'); this.running = true; this.ui.hideMenu(); this.showHud(true); playMusic('gameplay'); }
-  continueGame() { this.saveState = loadSave(); if (this.saveState.currentAct === 2 && this.saveState.currentZone === 'sky-map') return this.ui.openSkyMap(); this.loadZone(this.saveState.currentZone || 'quiet-castle'); this.running = true; this.ui.hideMenu(); this.showHud(true); playMusic('gameplay'); }
+  startNew() { clearSave(); this.saveState = loadSave(); this.loadZone('quiet-castle'); this.running = true; this.paused = false; this.ui.hideMenu(); this.showHud(true); playMusic('gameplay'); }
+  continueGame() { this.saveState = loadSave(); if (this.saveState.currentAct === 2 && this.saveState.currentZone === 'sky-map') return this.ui.openSkyMap(); this.loadZone(this.saveState.currentZone || 'quiet-castle'); this.running = true; this.paused = false; this.ui.hideMenu(); this.showHud(true); playMusic('gameplay'); }
 
   loadZone(id) {
     this.zone = getZone(id) || getFinalZone();
@@ -72,6 +73,7 @@ export class Game {
     const lvl = getSkyLevelByCard(cardId);
     this.loadZone(lvl.id);
     this.running = true;
+    this.paused = false;
     this.showHud(true);
     playMusic('sky');
   }
@@ -125,21 +127,32 @@ export class Game {
   }
 
   update(dt) {
-    if (isDown('f3')) this.debug = true;
-    if (isDown('escape')) this.ui.showPause();
-    if (isDown('r')) { this.player.x = this.checkpoint.x; this.player.y = this.checkpoint.y; this.player.vx = this.player.vy = 0; }
+    if (wasActionPressed('debug')) this.debug = !this.debug;
+    if (wasActionPressed('pause')) this.ui.showPause();
+    if (wasActionPressed('respawn')) { this.player.x = this.checkpoint.x; this.player.y = this.checkpoint.y; this.player.vx = this.player.vy = 0; }
 
     const inWater = (this.zone.waterAreas || []).some((w) => aabb(this.player, w));
     const gravityScale = inWater ? (this.zone.waterGravityScale || 0.52) : (this.zone.gravityScale || 1);
+    const wasGrounded = this.player.onGround;
     this.player.onGround = false;
-    this.player.update(dt, inWater, gravityScale, this.zone.waterFriction || 0.72);
+    const playerFrame = this.player.update(dt, inWater, gravityScale, this.zone.waterFriction || 0.72);
+    if (playerFrame.jumped) {
+      playSfx('jump');
+      this.particles.burst(this.player.x + this.player.w / 2, this.player.y + this.player.h * 0.65, inWater ? '#cbeeff' : '#ffe8ff', this.saveState.reducedParticles ? 3 : 7);
+    }
 
     (this.zone.wavePlatforms || []).forEach((p) => { p.t = (p.t || 0) + dt; p.y += Math.sin(p.t * p.speed) * p.amp * dt; });
     (this.zone.tidePlatforms || []).forEach((p) => { p.t = (p.t || 0) + dt; p.active = Math.sin(p.t * (Math.PI / p.period)) > 0; });
 
     const solids = [...(this.zone.platforms || []), ...(this.zone.temporaryPlatforms || []), ...(this.zone.wavePlatforms || []), ...((this.zone.tidePlatforms || []).filter((p) => p.active))];
+    const impactVy = this.player.vy;
     solids.forEach((p) => { if (aabb(this.player, p)) resolveRect(this.player, p); });
-    (this.zone.bubbleLifts || []).forEach((b) => { if (aabb(this.player, b)) { this.player.vy -= (b.lift || 320) * dt; playSfx('bubble'); } });
+    (this.zone.bubbleLifts || []).forEach((b) => { if (aabb(this.player, b)) { this.player.vy -= (b.lift || 320) * dt; if (Math.random() < 0.12) playSfx('bubble'); } });
+
+    if (this.player.onGround && !wasGrounded) {
+      this.particles.burst(this.player.x + this.player.w / 2, this.player.y + this.player.h, '#ffe2f7', this.saveState.reducedParticles ? 2 : 5);
+      if (Math.abs(impactVy) > 280) playSfx('splash');
+    }
 
     updateEnemies(this.zone.enemies || [], dt);
     const enemyEvent = handleEnemyVsPlayer(this.player, this.zone.enemies || []);
@@ -159,6 +172,7 @@ export class Game {
 
     this.camera.follow(this.player, this.zone.width || WIDTH);
     this.handleTransitions();
+    this.particles.update(dt);
 
     const totalCollect = (this.zone.collectibles || []).length;
     const currCollect = (this.zone.collectibles || []).filter((c) => c.got).length;
@@ -172,8 +186,9 @@ export class Game {
   loop(ts) {
     const dt = Math.min(0.033, (ts - this.last) / 1000 || 0.016);
     this.last = ts;
-    if (this.running) this.update(dt);
+    if (this.running && !this.paused) this.update(dt);
     render(this.ctx, this);
+    endInputFrame();
     requestAnimationFrame((t) => this.loop(t));
   }
 }

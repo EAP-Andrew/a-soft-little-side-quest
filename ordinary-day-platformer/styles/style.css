@@ -1,12 +1,125 @@
-:root { color-scheme: light dark; }
-* { box-sizing: border-box; font-family: 'Trebuchet MS', 'Segoe UI', sans-serif; }
-body { margin: 0; background: radial-gradient(circle at top, #17375b, #0b1320); color: #fff; }
-#app { position: relative; min-height: 100vh; display: grid; place-items: center; }
-canvas { width: min(100vw, 1280px); height: auto; aspect-ratio: 16/9; background: #000; border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,.38); }
-.overlay { position: absolute; inset: 0; display: grid; place-items: center; backdrop-filter: blur(2px); }
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg-top: #dff2ff;
+  --bg-mid: #e9dcff;
+  --bg-bottom: #ffe6f6;
+  --text-main: #4b3e63;
+  --text-soft: #6f5f89;
+  --glass: rgba(255, 255, 255, 0.66);
+  --glass-outline: rgba(255, 255, 255, 0.75);
+  --pink: #ffb4dc;
+  --pink-dark: #d56ea6;
+  --lavender: #cdbdff;
+  --mint: #bcefd8;
+  --shadow: 0 18px 55px rgba(111, 92, 152, 0.24);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  color: var(--text-main);
+  background: radial-gradient(circle at 20% 10%, #ffffff 0 12%, transparent 34%), linear-gradient(150deg, var(--bg-top), var(--bg-mid) 52%, var(--bg-bottom));
+  overflow: hidden;
+}
+
+#app {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: min(3vw, 22px);
+}
+
+canvas {
+  width: min(100%, 1280px);
+  max-height: calc(100vh - min(6vw, 44px));
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 26px;
+  border: 3px solid rgba(255, 255, 255, 0.62);
+  background: linear-gradient(180deg, #9dc8ff, #f9d9ff 82%);
+  box-shadow: var(--shadow);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: min(4vw, 28px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
 .hidden { display: none !important; }
-.panel { background: rgba(12, 17, 28, 0.82); color: #fff; padding: 2rem; border-radius: 14px; width: min(92vw, 880px); max-height: 84vh; overflow: auto; }
-button { border: 0; padding: .65rem 1rem; border-radius: 10px; cursor: pointer; background: #f59dd4; color: #2d1435; font-weight: 700; }
-button:hover { filter: brightness(1.06); transform: translateY(-1px); }
-#screenTooSmall { font-size: 1.1rem; color: #fff; text-shadow: 0 2px 8px #000; }
-pre { white-space: pre-wrap; line-height: 1.45; }
+
+.panel,
+.menu-card,
+.panel-shell,
+.paper {
+  background: linear-gradient(140deg, var(--glass), rgba(255, 255, 255, 0.48));
+  border: 1px solid var(--glass-outline);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.panel {
+  color: var(--text-main);
+  padding: 1.4rem;
+  width: min(96vw, 980px);
+  max-height: 86vh;
+  overflow: auto;
+}
+
+.panel-shell { padding: 1.3rem 1.45rem; }
+
+h1, h2, h3 {
+  margin: 0 0 .7rem;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  color: #64448e;
+  letter-spacing: 0.02em;
+}
+
+p { margin: 0; color: var(--text-soft); }
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.15rem;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #5a3a7b;
+  background: linear-gradient(150deg, #ffd6ef, #ffeef8 44%, #d4ceff);
+  box-shadow: 0 8px 20px rgba(164, 107, 152, 0.26);
+  transition: transform .15s ease, filter .15s ease;
+}
+
+button.soft { background: linear-gradient(150deg, #ebf6ff, #f7ecff 58%, #d8fce8); }
+button:hover { filter: brightness(1.02); transform: translateY(-1px); }
+button:active { transform: translateY(0); }
+button:disabled { opacity: .58; cursor: not-allowed; }
+
+#screenTooSmall {
+  z-index: 2;
+  font-size: 1rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+}
+
+pre { white-space: pre-wrap; line-height: 1.5; }
+.controls-list { margin: .4rem 0 1rem; padding-left: 1.2rem; color: var(--text-soft); }
+.controls-list li { margin-bottom: .3rem; }
+.panel-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+@media (max-width: 820px) {
+  #app { padding: 10px; }
+  .overlay { padding: 12px; }
+  canvas { border-radius: 18px; max-height: calc(100vh - 20px); }
+}

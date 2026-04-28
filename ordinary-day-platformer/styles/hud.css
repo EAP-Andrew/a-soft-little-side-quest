@@ -1,9 +1,71 @@
-#hud { position: absolute; inset: 1rem 1rem auto 1rem; pointer-events: none; }
-#hudTop, #hudObjective { background: rgba(11, 16, 26, .62); padding: .45rem .65rem; width: fit-content; border-radius: 8px; margin-bottom: .35rem; }
-#hudProgress { width: min(420px, 80vw); height: 12px; background: #ffffff22; border-radius: 8px; overflow: hidden; }
-#hudProgressFill { width: 0%; height: 100%; background: linear-gradient(90deg, #8ff0cb, #f2baea); }
-#hudPrompt { margin-top: .45rem; color: #fef3ff; text-shadow: 0 0 8px #000; }
-#hudToast { position: absolute; right: 0; top: 0; opacity: 0; transition: opacity .2s; background: #ffe0f5; color: #3e284f; padding: .45rem .6rem; border-radius: 8px; }
+#hud {
+  position: absolute;
+  inset: 1rem 1rem auto 1rem;
+  pointer-events: none;
+  display: grid;
+  gap: .35rem;
+}
+
+#hudTop,
+#hudObjective {
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(4px);
+  color: #4f4069;
+  font-weight: 700;
+  padding: .42rem .68rem;
+  width: fit-content;
+  border-radius: 999px;
+}
+
+#hudProgress {
+  width: min(440px, 82vw);
+  height: 13px;
+  background: rgba(255,255,255,.5);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.8);
+}
+
+#hudProgressFill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #97e4c3, #ffc7e5, #b9c3ff);
+  box-shadow: 0 0 12px rgba(255, 186, 230, .7);
+}
+
+#hudPrompt {
+  margin-top: .2rem;
+  color: #fff7ff;
+  text-shadow: 0 3px 14px rgba(87, 42, 120, .66);
+  font-weight: 700;
+}
+
+#hudToast {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity .2s;
+  background: rgba(255, 244, 252, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #5a4678;
+  font-weight: 700;
+  padding: .45rem .65rem;
+  border-radius: 999px;
+}
 #hudToast.show { opacity: 1; }
-.paper { background: #fff7e9; color: #3b2f25; border-radius: 12px; padding: 1.2rem 1.4rem; box-shadow: 0 12px 40px #0003; animation: rise .35s ease-out; }
-@keyframes rise { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.paper {
+  background: linear-gradient(155deg, #fff9ea, #fffdf9);
+  color: #4f3f35;
+  border-radius: 22px;
+  padding: 1.1rem 1.3rem;
+  box-shadow: 0 18px 40px rgba(82, 62, 39, 0.2);
+  animation: rise .35s ease-out;
+  max-width: min(920px, 96vw);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
