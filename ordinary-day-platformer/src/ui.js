@@ -11,8 +11,8 @@ export function setupUI(game) {
 
   $('playBtn').onclick = () => game.startNew();
   $('continueBtn').onclick = () => game.continueGame();
-  $('controlsBtn').onclick = () => showControls(controls);
-  $('creditsBtn').onclick = () => showCredits(credits);
+  $('controlsBtn').onclick = () => showControls(menu, controls);
+  $('creditsBtn').onclick = () => showCredits(menu, credits);
   $('muteBtn').onclick = () => game.toggleMute();
   $('particlesBtn').onclick = () => game.toggleParticles();
 
@@ -71,10 +71,22 @@ export function setupUI(game) {
   };
 
   controls.innerHTML = `<div class="panel-shell"><h2>Controls</h2><ul class="controls-list"><li><strong>Move:</strong> Arrow Left/Right, A/D, or Q/D</li><li><strong>Jump:</strong> Space, Arrow Up, W, or Z</li><li><strong>Interact:</strong> Mouse click</li><li><strong>Pause:</strong> Escape</li><li><strong>Respawn:</strong> R</li><li><strong>Debug:</strong> F3</li></ul><button class="soft">Back</button></div>`;
-  controls.querySelector('button').onclick = () => controls.classList.add('hidden');
+  controls.querySelector('button').onclick = () => {
+    controls.classList.add('hidden');
+    menu.classList.remove('hidden');
+  };
   credits.innerHTML = `<div class="panel-shell"><h2>${GAME_TITLE}</h2><p>${GAME_SUBTITLE}</p><p>Original code art, audio, and game design crafted in vanilla HTML/CSS/JS.</p><button class="soft">Back</button></div>`;
-  credits.querySelector('button').onclick = () => credits.classList.add('hidden');
+  credits.querySelector('button').onclick = () => {
+    credits.classList.add('hidden');
+    menu.classList.remove('hidden');
+  };
 }
 
-function showControls(el) { el.classList.remove('hidden'); }
-function showCredits(el) { el.classList.remove('hidden'); }
+function showControls(menu, panel) {
+  menu.classList.add('hidden');
+  panel.classList.remove('hidden');
+}
+function showCredits(menu, panel) {
+  menu.classList.add('hidden');
+  panel.classList.remove('hidden');
+}
