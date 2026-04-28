@@ -40,11 +40,10 @@ http://localhost:8000
 
 ## Controls
 
-- `Z` / `W`: up / climb / enter portal
-- `Q` / `A`: move left
-- `S`: crouch / down
-- `D`: move right
-- `Space`: jump
+- `Space` / `ArrowUp` / `W` / `Z`: jump and up interactions
+- `ArrowLeft` / `A` / `Q`: move left (Q for AZERTY)
+- `ArrowRight` / `D`: move right
+- `ArrowDown` / `S`: crouch / down
 - `Mouse click`: interact
 - `Escape`: pause
 - `R`: respawn at checkpoint
@@ -55,7 +54,7 @@ http://localhost:8000
 - Main menu, controls, credits, pause
 - Continue via `localStorage`
 - Data-driven zones
-- Player physics (gravity, acceleration, friction, coyote time, jump buffer, variable jump)
+- Player physics (gravity, acceleration, friction, coyote time, jump buffer, variable jump, fall tuning)
 - AABB collisions
 - Enemy stomp + damage + invincibility windows
 - Checkpoints + save system

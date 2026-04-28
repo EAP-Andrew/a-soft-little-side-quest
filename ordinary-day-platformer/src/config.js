@@ -8,10 +8,11 @@ export const PHYSICS = {
   gravity: 1900,
   accel: 2200,
   maxSpeed: 330,
-  friction: 0.85,
+  friction: 0.82,
   jumpSpeed: 720,
   coyoteTime: 0.1,
-  jumpBuffer: 0.12,
+  jumpBuffer: 0.14,
+  fallGravityMultiplier: 1.18,
   invincibleTime: 1,
 };
 
