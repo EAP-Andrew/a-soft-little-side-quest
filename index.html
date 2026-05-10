@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>A Soft Little Side Quest</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-title">A Soft Little Side Quest</div>
+      <div class="loader-bar"><div id="loader-fill"></div></div>
+      <div class="loader-text">Loading…</div>
+    </div>
+  </div>
+
+  <!-- Game canvas -->
+  <canvas id="game"></canvas>
+
+  <!-- Atmospheric overlays -->
+  <div id="vignette"></div>
+  <div id="fade"></div>
+
+  <!-- HUD: the avatar PNG is already a complete card (portrait + name + level) -->
+  <div id="hud">
+    <div id="hud-card">
+      <img id="hud-avatar" src="assets/ui/avatar_1.png" alt="Annie">
+      <div class="hud-exp"><div id="hud-exp-fill"></div></div>
+    </div>
+    <button id="mute-btn" title="Mute / Unmute">🔊</button>
+  </div>
+
+  <!-- Quest panel: the quest PNG already has the 4 objective rows printed.
+       We only overlay checkmarks at the right end of each row. -->
+  <div id="quest-panel">
+    <div id="quest-bg"></div>
+    <img class="quest-check" data-i="0" src="assets/ui/check.png" alt="">
+    <img class="quest-check" data-i="1" src="assets/ui/check.png" alt="">
+    <img class="quest-check" data-i="2" src="assets/ui/check.png" alt="">
+    <img class="quest-check" data-i="3" src="assets/ui/check.png" alt="">
+  </div>
+
+  <!-- Interaction prompt -->
+  <div id="prompt">Press <kbd>E</kbd> to interact</div>
+
+  <!-- Candle countdown -->
+  <div id="countdown">
+    <img id="countdown-img" src="assets/ui/counter_10.png" alt="10">
+    <div id="candles-left">27 candles</div>
+    <div id="candles-hint">Click the cake to blow the candles!</div>
+  </div>
+
+  <!-- Toast popup -->
+  <div id="toast"></div>
+
+  <!-- Level up burst -->
+  <div id="levelup">LEVEL UP!</div>
+
+  <!-- Pause menu -->
+  <div id="pause">
+    <div class="pause-card">
+      <h2>Paused</h2>
+      <p>Press Esc to resume</p>
+      <button id="resume-btn">Resume</button>
+      <button id="mute-btn-2">Toggle Sound</button>
+    </div>
+  </div>
+
+  <!-- Letter overlay: shows assets/letter/ui/letter.png big, with a red X close button -->
+  <div id="letter-overlay">
+    <div id="letter-card">
+      <button id="letter-close" title="Close">×</button>
+      <img id="letter-image" src="assets/letter/ui/letter.png" alt="Letter">
+    </div>
+  </div>
+
+  <!-- Reopenable letter icon (post-ending) -->
+  <div id="letter-icon" title="Read the letter again">
+    <img src="assets/letter/ui/letter.png" alt="Letter">
+  </div>
+
+  <!-- On-screen touch controls (auto-shown on touch devices) -->
+  <div id="touch-controls">
+    <div class="tc-pad tc-left">
+      <button class="tc-btn" data-action="left"  aria-label="Left">◀</button>
+      <button class="tc-btn" data-action="right" aria-label="Right">▶</button>
+    </div>
+    <div class="tc-pad tc-right">
+      <button class="tc-btn tc-small tc-text" data-action="interact" aria-label="Interact">E</button>
+      <button class="tc-btn tc-small tc-text" data-action="sprint"   aria-label="Sprint">CTRL</button>
+      <button class="tc-btn tc-jump  tc-text" data-action="jump"     aria-label="Jump">SPACE</button>
+    </div>
+  </div>
+
+  <!-- Rotate-to-landscape prompt (touch devices in portrait) -->
+  <div id="rotate-prompt">
+    <div class="rotate-card">
+      <div class="rotate-icon">⟳</div>
+      <h2>Tourne ton téléphone</h2>
+      <p>Le jeu se joue en mode paysage</p>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
